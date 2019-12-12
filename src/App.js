@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import SignIn from './components/SignIn/SignIn';
+import SignUp from './components/SignUp/SignUp';
+import PrivateHome from './components/PrivateHome/PrivateHome';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+
+  render() {
+
+    const HomeView = () => (
+      <React.Fragment>
+        {localStorage.getItem('isLoggedIn') ? <PrivateHome/>: <SignIn />}
+      </React.Fragment>
+    );
+
+    const SignInView = () => (
+      <React.Fragment>
+        {localStorage.getItem('isLoggedIn') ?<HomeView /> : <SignIn />}
+      </React.Fragment>
+    );
+
+    const SignUpView = () => (
+      <React.Fragment>
+        {localStorage.getItem('isLoggedIn') ? <HomeView /> : <SignUp />}
+      </React.Fragment>
+    );
+
+    return (
+      <Router>
+        <Switch>
+          <Route exact path="/" component={HomeView} />
+          <Route exact path="/signin" component={SignInView} />
+          <Route exact path="/signup" component={SignUpView} />
+          <Route exact path="/home" component={HomeView} />
+        </Switch>
+      </Router>
+    );
+  }
 }
 
 export default App;
