@@ -12,21 +12,22 @@ export default function MyCamera (props) {
  
     function handleTakePhotoAnimationDone (dataUri) {
         setDataUri(dataUri);
-        console.log(dataUri);
-        var img = document.getElementById('captureTaken');
         var button = document.getElementById('saveImage');
-        img.src = dataUri;
-        img.onload = function () {
-            button.removeAttribute('disabled');
-        };
         button.onclick = function () {
-            window.location.href = img.src.replace('image/png', 'image/octet-stream');
+            var a = document.createElement('a');
+            a.href = dataUri;
+            a.download = 'capture.png';
+            a.style = 'display: none';
+            button.parentNode.appendChild(a);
+            a.click();
+            a.remove();
+            setDataUri('');
         };
     }
-   
+
     const isFullscreen = false;
-    return (
-      <div>
+    return (       
+        <div key={dataUri}>
         {
           (dataUri)
             ?
@@ -39,8 +40,7 @@ export default function MyCamera (props) {
                         direction="row"
                         justify="center"
                         alignItems="center"
-                        fullWidth
-                    >
+                        fullWidth>
                         <Grid item xs={6}>
                             <Button variant="contained" color="primary" fullWidth
                                 style={{backgroundColor: "#00c853"}} id="saveImage">
@@ -48,7 +48,10 @@ export default function MyCamera (props) {
                             </Button>
                         </Grid>
                         <Grid item xs={6}>
-                            <Button variant="contained" color="secondary" fullWidth>
+                            <Button variant="contained" color="secondary" fullWidth
+                                onClick={()=>{
+                                    setDataUri('');
+                                }}>
                                 Cancel
                             </Button>
                         </Grid>
@@ -56,7 +59,8 @@ export default function MyCamera (props) {
                 </Container>
             </React.Fragment>
             
-            : <Camera onTakePhotoAnimationDone = {handleTakePhotoAnimationDone}
+            :
+            <Camera onTakePhotoAnimationDone = {handleTakePhotoAnimationDone}
               isFullscreen={isFullscreen}
             />
         }

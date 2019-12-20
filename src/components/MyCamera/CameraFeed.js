@@ -53,7 +53,6 @@ export class CameraFeed extends Component {
     render() {
         return (
             <div className="c-camera-feed">
-                
                     <div className="c-camera-feed__viewer">
                         <video ref={ref => (this.videoPlayer = ref)}
                             className="videoCamera" width="700px" height="700px" />
@@ -62,7 +61,6 @@ export class CameraFeed extends Component {
                             Take photo!
                         </Button>
                     </div>
-                    
                     <div className="c-camera-feed__stage">
                         <canvas margin="auto" width="700px" height="700px" ref={ref => (this.canvas = ref)} />
                     </div>
